@@ -9,8 +9,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Образовательное мероприятие",
-  description: "Регистрация на образовательное мероприятие колледжа",
-    generator: 'v0.dev'
+  description: "Регис��рация на образовательное мероприятие колледжа",
 }
 
 export default function RootLayout({

@@ -3,6 +3,7 @@ import { createServerSupabaseClient } from "@/lib/supabase"
 
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
+    console.log(`Deleting speaker with ID: ${params.id}`)
     const supabase = createServerSupabaseClient()
     const speakerId = Number.parseInt(params.id)
 
@@ -17,18 +18,27 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
+    console.log(`Speaker ${speakerId} deleted successfully`)
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("Speaker deletion error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json(
+      {
+        error: "Internal server error",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 },
+    )
   }
 }
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
+    console.log(`Updating speaker with ID: ${params.id}`)
     const supabase = createServerSupabaseClient()
     const speakerId = Number.parseInt(params.id)
     const { name, topic, bio } = await request.json()
+    console.log("Update data:", { name, topic, bio })
 
     if (isNaN(speakerId)) {
       return NextResponse.json({ error: "Invalid speaker ID" }, { status: 400 })
@@ -54,12 +64,19 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
+    console.log("Speaker updated successfully:", speaker)
     return NextResponse.json({
       success: true,
       speaker,
     })
   } catch (error) {
     console.error("Speaker update error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json(
+      {
+        error: "Internal server error",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 },
+    )
   }
 }

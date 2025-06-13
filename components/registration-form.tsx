@@ -1,101 +1,100 @@
-"use client";
+"use client"
 
-import type React from "react";
+import type React from "react"
 
-import { useState, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useLanguage } from "@/hooks/use-language";
-import { ArrowLeft, Volume2, VolumeX, Loader2, LogIn } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
+import { useState, useEffect, useRef } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useLanguage } from "@/hooks/use-language"
+import { ArrowLeft, Volume2, VolumeX, Loader2, LogIn, AlertCircle } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { useToast } from "@/hooks/use-toast"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 interface RegistrationFormProps {
-  onSuccess: (user: any) => void;
-  onBack: () => void;
-  onLoginClick: () => void;
+  onSuccess: (user: any) => void
+  onBack: () => void
+  onLoginClick: () => void
 }
 
-export default function RegistrationForm({
-  onSuccess,
-  onBack,
-  onLoginClick,
-}: RegistrationFormProps) {
-  const { translations, language } = useLanguage();
-  const { toast } = useToast();
+export default function RegistrationForm({ onSuccess, onBack, onLoginClick }: RegistrationFormProps) {
+  const { translations, language } = useLanguage()
+  const { toast } = useToast()
   const [formData, setFormData] = useState({
     lastName: "",
     firstName: "",
     middleName: "",
     region: "",
     position: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [registeredUser, setRegisteredUser] = useState<any>(null);
-  const [audioPlaying, setAudioPlaying] = useState(false);
-  const [audioError, setAudioError] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [registeredUser, setRegisteredUser] = useState<any>(null)
+  const [audioPlaying, setAudioPlaying] = useState(false)
+  const [audioError, setAudioError] = useState(false)
+  const [registrationError, setRegistrationError] = useState<string | null>(null)
+  const audioRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
     // Cleanup function to handle component unmounting
     return () => {
       if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
+        audioRef.current.pause()
+        audioRef.current.currentTime = 0
       }
-    };
-  }, []);
+    }
+  }, [])
 
   const playRegistrationSound = async () => {
-    if (!audioRef.current) return;
+    if (!audioRef.current) return
 
     try {
-      setAudioError(false);
-      setAudioPlaying(true);
+      setAudioError(false)
+      setAudioPlaying(true)
 
       // Set audio source based on current language
-      audioRef.current.src = `/audio/registration-${language}.mp3`;
-      audioRef.current.currentTime = 0;
+      audioRef.current.src = `/audio/registration-${language}.mp3`
+      audioRef.current.currentTime = 0
 
-      await audioRef.current.play();
+      await audioRef.current.play()
     } catch (error) {
-      console.warn("Audio playback failed:", error);
-      setAudioError(true);
-      setAudioPlaying(false);
+      console.warn("Audio playback failed:", error)
+      setAudioError(true)
+      setAudioPlaying(false)
     }
-  };
+  }
 
   const handleAudioEnded = () => {
-    setAudioPlaying(false);
-  };
+    setAudioPlaying(false)
+  }
 
   const handleAudioError = () => {
-    setAudioError(true);
-    setAudioPlaying(false);
-  };
+    setAudioError(true)
+    setAudioPlaying(false)
+  }
 
   const getParticipantColor = (number: number) => {
-    if (number <= 20) return "bg-green-100 border-green-500";
-    if (number <= 40) return "bg-yellow-100 border-yellow-500";
-    if (number <= 60) return "bg-orange-100 border-orange-500";
-    return "bg-blue-100 border-blue-500";
-  };
+    if (number <= 20) return "bg-green-100 border-green-500"
+    if (number <= 40) return "bg-yellow-100 border-yellow-500"
+    if (number <= 60) return "bg-orange-100 border-orange-500"
+    return "bg-blue-100 border-blue-500"
+  }
 
   const getParticipantColorText = (number: number) => {
-    if (number <= 20) return "text-green-800";
-    if (number <= 40) return "text-yellow-800";
-    if (number <= 60) return "text-orange-800";
-    return "text-blue-800";
-  };
+    if (number <= 20) return "text-green-800"
+    if (number <= 40) return "text-yellow-800"
+    if (number <= 60) return "text-orange-800"
+    return "text-blue-800"
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+    e.preventDefault()
+    setIsSubmitting(true)
+    setRegistrationError(null)
 
     try {
       // Play sound when form is submitted
-      await playRegistrationSound();
+      await playRegistrationSound()
 
       // Отправляем данные на сервер для регистрации
       const response = await fetch("/api/register", {
@@ -104,16 +103,16 @@ export default function RegistrationForm({
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || "Registration failed");
+        throw new Error(data.error || data.details || "Registration failed")
       }
 
       // Получаем данные участника из ответа сервера
-      const participant = data.participant;
+      const participant = data.participant
 
       // Создаем объект пользователя с нужными данными для отображения
       const user = {
@@ -123,25 +122,25 @@ export default function RegistrationForm({
         password: participant.password,
         color: getParticipantColor(participant.participant_number),
         colorText: getParticipantColorText(participant.participant_number),
-      };
+      }
 
-      setRegisteredUser(user);
+      setRegisteredUser(user)
     } catch (error) {
-      console.error("Registration error:", error);
+      console.error("Registration error:", error)
+      setRegistrationError(error instanceof Error ? error.message : "An unknown error occurred")
       toast({
         title: translations.registrationError || "Registration Error",
-        description:
-          error instanceof Error ? error.message : "An unknown error occurred",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
         variant: "destructive",
-      });
+      })
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   const handleContinue = () => {
-    onSuccess(registeredUser);
-  };
+    onSuccess(registeredUser)
+  }
 
   if (registeredUser) {
     return (
@@ -154,21 +153,17 @@ export default function RegistrationForm({
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center space-y-2">
-              <p className={`font-semibold ${registeredUser.colorText}`}>
-                {translations.registrationSuccess}
-              </p>
+              <p className={`font-semibold ${registeredUser.colorText}`}>{translations.registrationSuccess}</p>
               <div className="bg-white/50 p-4 rounded-lg">
                 <p>
                   <strong>{translations.login}:</strong> {registeredUser.login}
                 </p>
                 <p>
-                  <strong>{translations.password}:</strong>{" "}
-                  {registeredUser.password}
+                  <strong>{translations.password}:</strong> {registeredUser.password}
                 </p>
               </div>
               <p className="text-sm text-gray-600">
-                {translations.saveCredentials ||
-                  "Save these credentials for future login"}
+                {translations.saveCredentials || "Save these credentials for future login"}
               </p>
             </div>
             <Button onClick={handleContinue} className="w-full">
@@ -177,17 +172,12 @@ export default function RegistrationForm({
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <audio
-        ref={audioRef}
-        preload="none"
-        onEnded={handleAudioEnded}
-        onError={handleAudioError}
-      />
+      <audio ref={audioRef} preload="none" onEnded={handleAudioEnded} onError={handleAudioError} />
 
       <Card className="w-full max-w-md">
         <CardHeader>
@@ -196,9 +186,7 @@ export default function RegistrationForm({
               <Button variant="ghost" size="sm" onClick={onBack}>
                 <ArrowLeft className="w-4 h-4" />
               </Button>
-              <CardTitle className="text-xl">
-                {translations.registration}
-              </CardTitle>
+              <CardTitle className="text-xl">{translations.registration}</CardTitle>
               {audioPlaying ? (
                 <Volume2 className="w-5 h-5 text-blue-600 animate-pulse" />
               ) : audioError ? (
@@ -214,25 +202,26 @@ export default function RegistrationForm({
           </div>
           <p className="text-sm text-gray-600">
             {translations.alreadyRegistered || "Already registered?"}{" "}
-            <Button
-              variant="link"
-              className="p-0 h-auto font-normal text-sm"
-              onClick={onLoginClick}
-            >
+            <Button variant="link" className="p-0 h-auto font-normal text-sm" onClick={onLoginClick}>
               {translations.clickHereToLogin || "Click here to login"}
             </Button>
           </p>
         </CardHeader>
         <CardContent>
+          {registrationError && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{registrationError}</AlertDescription>
+            </Alert>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="lastName">{translations.lastName}</Label>
               <Input
                 id="lastName"
                 value={formData.lastName}
-                onChange={(e) =>
-                  setFormData({ ...formData, lastName: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                 required
               />
             </div>
@@ -242,9 +231,7 @@ export default function RegistrationForm({
               <Input
                 id="firstName"
                 value={formData.firstName}
-                onChange={(e) =>
-                  setFormData({ ...formData, firstName: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                 required
               />
             </div>
@@ -254,9 +241,7 @@ export default function RegistrationForm({
               <Input
                 id="middleName"
                 value={formData.middleName}
-                onChange={(e) =>
-                  setFormData({ ...formData, middleName: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, middleName: e.target.value })}
                 required
               />
             </div>
@@ -266,9 +251,7 @@ export default function RegistrationForm({
               <Input
                 id="region"
                 value={formData.region}
-                onChange={(e) =>
-                  setFormData({ ...formData, region: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, region: e.target.value })}
                 required
               />
             </div>
@@ -278,9 +261,7 @@ export default function RegistrationForm({
               <Input
                 id="position"
                 value={formData.position}
-                onChange={(e) =>
-                  setFormData({ ...formData, position: e.target.value })
-                }
+                onChange={(e) => setFormData({ ...formData, position: e.target.value })}
                 required
               />
             </div>
@@ -299,5 +280,5 @@ export default function RegistrationForm({
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
