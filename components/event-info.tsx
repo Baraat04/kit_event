@@ -3,6 +3,12 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import KIT1 from "../public/kit1.jpg";
+import KIT2 from "../public/kit2.jpg";
+import KIT3 from "../public/kit3.jpg";
+import KIT4 from "../public/kit4.jpg";
+import KIT5 from "../public/kit5.jpg";
+import KIT6 from "../public/kit6.jpg";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -55,14 +61,7 @@ export default function EventInfo({ user, onBack }: EventInfoProps) {
     fetchSpeakers();
   }, []);
 
-  const galleryImages = [
-    "/placeholder.svg?height=300&width=400",
-    "/placeholder.svg?height=300&width=400",
-    "/placeholder.svg?height=300&width=400",
-    "/placeholder.svg?height=300&width=400",
-    "/placeholder.svg?height=300&width=400",
-    "/placeholder.svg?height=300&width=400",
-  ];
+  const galleryImages = [KIT1, KIT2, KIT3, KIT4, KIT5, KIT6];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
