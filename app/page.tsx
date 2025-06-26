@@ -11,6 +11,8 @@ import EventInfo from "@/components/event-info";
 import { useLanguage } from "@/hooks/use-language";
 import LanguageModal from "@/components/language-modal";
 
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 export default function HomePage() {
   const [currentView, setCurrentView] = useState<
     "language" | "home" | "register" | "login" | "event"
