@@ -59,6 +59,11 @@ const translations = {
         bio: "Coordinator of International Programs, Expert in Academic Mobility",
       },
     ],
+     famPlace:"Enter surname",
+    namePlace:"Enter name",
+    otcPlace:"Enter middlename",
+    regPlace:"Enter region",
+    dolPlace:"Enter position",
     welcome: "Welcome to the Event",
     eventDescription:
       "Join our educational event and become part of the professional community",
@@ -158,6 +163,11 @@ const translations = {
       },
     ],
     welcome: "Добро пожаловать на мероприятие",
+    famPlace:"Введите фамилию",
+    namePlace:"Введите имя",
+    otcPlace:"Введите отчество",
+    regPlace:"Введите регион",
+    dolPlace:"Введите должность",
     eventDescription:
       "Присоединяйтесь к нашему образовательному мероприятию и станьте частью профессионального сообщества",
     participants: "Участники",
@@ -208,6 +218,11 @@ const translations = {
     registrationError: "Ошибка регистрации",
   },
   kz: {
+      famPlace:"Тегіні Енгізіңіз",
+    namePlace:"Атын енгізіңіз",
+    otcPlace:"Әкесінің аты енгізіңіз",
+    regPlace:"Аймақты енгізіңіз",
+    dolPlace:"Лауазымды енгізіңіз",
     welcome: "Іс-шараға қош келдіңіз",
     eventDescription:
     "Біздің білім беру іс-шарасына қосылыңыз және кәсіби қауымдастықтың бөлігі болыңыз",

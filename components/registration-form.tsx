@@ -310,7 +310,7 @@ export default function RegistrationForm({ onSuccess, onBack, onLoginClick }: Re
       value={formData.lastName}
       onChange={handleLastNameChange}
       required
-      placeholder={translations.lastNamePlaceholder || "Введите фамилию"}
+      placeholder={translations.famPlace || "Введите фамилию"}
       autoComplete="off"
     />
     {isPopoverOpen && suggestions.length > 0 && (
@@ -339,7 +339,7 @@ export default function RegistrationForm({ onSuccess, onBack, onLoginClick }: Re
       value={formData.firstName}
       onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
       required
-      placeholder={translations.firstNamePlaceholder || "Введите имя"}
+      placeholder={translations.namePlace || "Введите имя"}
     />
   </div>
 
@@ -349,7 +349,7 @@ export default function RegistrationForm({ onSuccess, onBack, onLoginClick }: Re
       id="middleName"
       value={formData.middleName}
       onChange={(e) => setFormData({ ...formData, middleName: e.target.value })}
-      placeholder={translations.middleNamePlaceholder || "Введите отчество"}
+      placeholder={translations.otcPlace || "Введите отчество"}
     />
   </div>
 
@@ -360,7 +360,7 @@ export default function RegistrationForm({ onSuccess, onBack, onLoginClick }: Re
       value={formData.region}
       onChange={(e) => setFormData({ ...formData, region: e.target.value })}
       required
-      placeholder={translations.regionPlaceholder || "Введите регион"}
+      placeholder={translations.regPlace || "Введите регион"}
     />
   </div>
 
@@ -371,7 +371,7 @@ export default function RegistrationForm({ onSuccess, onBack, onLoginClick }: Re
       value={formData.position}
       onChange={(e) => setFormData({ ...formData, position: e.target.value })}
       required
-      placeholder={translations.positionPlaceholder || "Введите должность"}
+      placeholder={translations.dolPlace || "Введите должность"}
     />
   </div>
 
