@@ -254,9 +254,6 @@ export default function RegistrationForm({ onSuccess, onBack, onLoginClick }: Re
               <p className={`font-semibold ${registeredUser.colorText}`}>{translations.loginSuccess}</p>
               <div className="bg-white/50 p-4 rounded-lg">
                 <p>
-                  <strong>{translations.login}:</strong> {registeredUser.login}
-                </p>
-                <p>
                   <strong>{translations.password}:</strong> {registeredUser.password || "Not set"}
                 </p>
               </div>
@@ -293,10 +290,6 @@ export default function RegistrationForm({ onSuccess, onBack, onLoginClick }: Re
                 <Volume2 className="w-5 h-5 text-blue-600" />
               )}
             </div>
-            <Button variant="outline" size="sm" onClick={onLoginClick}>
-              <LogIn className="w-4 h-4 mr-2" />
-              {translations.login || "Login"}
-            </Button>
           </div>
         </CardHeader>
         <CardContent>

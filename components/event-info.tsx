@@ -8,7 +8,7 @@ import KIT3 from "../public/kit3.jpg"
 import KIT4 from "../public/kit4.jpg"
 import KIT5 from "../public/kit5.jpg"
 import KIT6 from "../public/kit6.jpg"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Download, ExternalLink, ZoomIn, Instagram, Globe } from "lucide-react"
 import { useLanguage } from "@/hooks/use-language"
@@ -31,8 +31,7 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
     }
     return initialUser
   })
-  const [showMessage, setShowMessage] = useState(true) // State to control message visibility
- // Программы мероприятий для разных языков
+
   const programImages = {
     ru: [
       "/program-ru-1.jpg",
@@ -59,6 +58,46 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
 
   const galleryImages = [KIT1, KIT2, KIT3, KIT4, KIT5, KIT6]
 
+  // Hardcoded speakers list for the specified names
+  const speakers = [
+    {
+      name: "Татьяна Шмидт",
+      topic: "Инновации в образовании",
+      bio: "Эксперт в области образовательных технологий с 15-летним опытом.",
+      image: "/tatyanashmidt.jpg"
+    },
+    {
+      name: "Татьяна Мигунова",
+      topic: "Цифровая трансформация",
+      bio: "Специалист по внедрению цифровых решений в корпоративной среде.",
+      image: "/migunova.jpg"
+    },
+    {
+      name: "Бабыкова",
+      topic: "Устойчивое развитие",
+      bio: "Исследователь экологических инициатив и устойчивого развития.",
+      image: "/gauharbabykova.jpg"
+    },
+    {
+      name: "Шабажанова",
+      topic: "Лидерство и мотивация",
+      bio: "Бизнес-тренер, специализирующийся на развитии лидерских качеств.",
+      image: "/saltanatshabazhanova.jpg"
+    },
+    {
+      name: "Садыкова",
+      topic: "Искусственный интеллект в образовании",
+      bio: "Разработчик образовательных платформ на базе ИИ.",
+      image: "/sadykova.jpg"
+    },
+    {
+      name: "Ромадинa",
+      topic: "Креативное мышление",
+      bio: "Коуч по развитию креативности и инновационного мышления.",
+      image: "/romadinavictoria.jpg"
+    }
+  ]
+
   useEffect(() => {
     if (user && typeof window !== 'undefined') {
       localStorage.setItem('currentUser', JSON.stringify(user))
@@ -77,14 +116,6 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
     if (savedUser) {
       setUser(JSON.parse(savedUser))
     }
-  }, [])
-
-  // Make the message disappear after 5 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowMessage(false)
-    }, 5000) // 5 seconds
-    return () => clearTimeout(timer) // Cleanup timer on unmount
   }, [])
 
   const getParticipantColor = (colorGroup: string) => {
@@ -121,7 +152,6 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
     }
   }
 
-  // Map English color names to Russian
   const getRussianColor = (colorGroup: string) => {
     switch (colorGroup?.toLowerCase()) {
       case "green":
@@ -139,11 +169,9 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
     }
   }
 
-  // Animation variants for the memorable text
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
-    exit: { opacity: 0, transition: { duration: 0.5 } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
   }
 
   return (
@@ -157,36 +185,72 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
           </div>
         </div>
 
-        {/* Memorable text with disappear effect */}
-        {showMessage && (
-          <motion.div
-            className={`mt-4 p-4 rounded-lg shadow-lg ${getParticipantColor(user.color_group)} ${getParticipantColorText(user.color_group)} text-center bg-opacity-80 backdrop-blur-sm animate-pulse`}
-            variants={textVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <p className="text-xl font-bold uppercase tracking-wide">
-              Запомните!
-            </p>
-            <p className="text-lg font-semibold">
-              {user.firstName} {user.lastName}, ваш цвет экскурсионной группы —{" "}
-              <span className="underline decoration-wavy">
-                {getRussianColor(user.color_group)}
-              </span>!
-            </p>
-          </motion.div>
-        )}
+        <motion.div
+          className={`mt-4 p-4 rounded-lg shadow-lg ${getParticipantColor(user.color_group)} ${getParticipantColorText(user.color_group)} text-center bg-opacity-80 backdrop-blur-sm`}
+          variants={textVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <p className="text-xl font-bold uppercase tracking-wide">
+            Запомните!
+          </p>
+          <p className="text-lg font-semibold">
+            {user.firstName} {user.lastName}, ваш цвет экскурсионной группы —{" "}
+            <span className="underline decoration-wavy">
+              {getRussianColor(user.color_group)}
+            </span>!
+          </p>
+        </motion.div>
 
-        <Tabs defaultValue="program" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="program">{translations.program}</TabsTrigger>
-            <TabsTrigger value="speakers">{translations.speakersLabel}</TabsTrigger>
-            <TabsTrigger value="gallery">{translations.collegeGallery}</TabsTrigger>
-            <TabsTrigger value="links">{translations.links}</TabsTrigger>
+        <Tabs defaultValue="program" className="w-full mt-6">
+          <TabsList className="grid w-full grid-cols-4 gap-2 bg-transparent">
+            <TabsTrigger
+              value="program"
+              className="
+                rounded-lg bg-white shadow-sm hover:bg-gray-100
+                text-sm leading-tight py-1 px-2
+                data-[state=active]:bg-blue-200 data-[state=active]:text-blue-800
+                overflow-hidden text-ellipsis whitespace-nowrap
+              "
+            >
+              {translations.program}
+            </TabsTrigger>
+            <TabsTrigger
+              value="speakers"
+              className="
+                rounded-lg bg-white shadow-sm hover:bg-gray-100
+                text-sm leading-tight py-1 px-2
+                data-[state=active]:bg-blue-200 data-[state=active]:text-blue-800
+                overflow-hidden text-ellipsis whitespace-nowrap
+              "
+            >
+              {translations.speakersLabel}
+            </TabsTrigger>
+            <TabsTrigger
+              value="gallery"
+              className="
+                rounded-lg bg-white shadow-sm hover:bg-gray-100
+                text-sm leading-tight py-1 px-2
+                data-[state=active]:bg-blue-200 data-[state=active]:text-blue-800
+                overflow-hidden text-ellipsis whitespace-nowrap
+              "
+            >
+              {translations.gallery || "Галерея"}
+            </TabsTrigger>
+            <TabsTrigger
+              value="links"
+              className="
+                rounded-lg bg-white shadow-sm hover:bg-gray-100
+                text-sm leading-tight py-1 px-2
+                data-[state=active]:bg-blue-200 data-[state=active]:text-blue-800
+                overflow-hidden text-ellipsis whitespace-nowrap
+              "
+            >
+              {translations.links}
+            </TabsTrigger>
           </TabsList>
 
-         <TabsContent value="program" className="mt-6">
+          <TabsContent value="program" className="mt-6">
             <Card>
               <CardHeader>
                 <CardTitle>{translations.eventProgram}</CardTitle>
@@ -217,24 +281,24 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
             <Card>
               <CardHeader>
                 <CardTitle>
-                  {translations.speakersLabel} ({translations.speakers.length})
+                  {translations.speakersLabel} ({speakers.length})
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {translations.speakers.length === 0 ? (
+                {speakers.length === 0 ? (
                   <div className="text-center py-8 text-gray-500">
                     {translations.noSpeakers || "Спикеры пока не добавлены"}
                   </div>
                 ) : (
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {translations.speakers.map((speaker: any, index: number) => (
+                    {speakers.map((speaker: any, index: number) => (
                       <Card
                         key={index}
                         className="hover:shadow-lg transition-shadow"
                       >
                         <CardContent className="p-6 text-center">
                           <Image
-                            src="/placeholder.svg?height=200&width=200"
+                            src={speaker.image || "/placeholder.svg?height=200&width=200"}
                             alt={speaker.name}
                             width={200}
                             height={200}
@@ -263,7 +327,7 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
           <TabsContent value="gallery" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>{translations.collegeGallery}</CardTitle>
+                <CardTitle>{translations.gallery || "Галерея"}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
