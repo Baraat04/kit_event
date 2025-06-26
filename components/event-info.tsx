@@ -73,25 +73,25 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
       image: "/migunova.jpg"
     },
     {
-      name: "Бабыкова",
+      name: "Гаухар Бабыкова",
       topic: "Устойчивое развитие",
       bio: "Исследователь экологических инициатив и устойчивого развития.",
       image: "/gauharbabykova.jpg"
     },
     {
-      name: "Шабажанова",
+      name: "Салтанат Шабажанова",
       topic: "Лидерство и мотивация",
       bio: "Бизнес-тренер, специализирующийся на развитии лидерских качеств.",
       image: "/saltanatshabazhanova.jpg"
     },
     {
-      name: "Садыкова",
+      name: "Анара Садыкова",
       topic: "Искусственный интеллект в образовании",
       bio: "Разработчик образовательных платформ на базе ИИ.",
       image: "/sadykova.jpg"
     },
     {
-      name: "Ромадинa",
+      name: "Виктория Ромадинa",
       topic: "Креативное мышление",
       bio: "Коуч по развитию креативности и инновационного мышления.",
       image: "/romadinavictoria.jpg"
