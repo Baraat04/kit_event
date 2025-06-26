@@ -12,53 +12,46 @@ interface LanguageContextType {
 
 const translations = {
   en: {
-    speakers: [
+speakers: [
       {
         name: "Tatiana Schmidt",
-        topic: "Neurotechnologies and Artificial Intelligence in Kindergarten as a Means of Cognitive Development",
-        bio: "Head of the Resource Center, Kindergarten No. 21, Ekibastuz",
+        topic: "Neurotechnologies and artificial intelligence in kindergarten as a tool for the cognitive development of a child",
+        bio: "Head of the Resource Center, kindergarten No. 21, Ekibastuz",
+        image: "/tatyanashmidt.jpg", // Replace with actual path
       },
       {
-        name: "Tatiana Migunova",
-        topic: "Innovative Approaches in School Management Based on Artificial Intelligence",
-        bio: "Director of the Baytursynuly Innovative School",
+        name: "Tatyana Migunova",
+        topic: "Innovative Approaches to school management based on artificial intelligence",
+        bio: "Director of the Baitursynov Innovation School",
+        image: "/migunova.jpg", // Replace with actual path
       },
       {
         name: "Gaukhar Babykova",
-        topic: "The Role of a Leader in Creating a School Environment that Supports Growth and Initiative",
+        topic: "The role of the leader in creating a school environment that supports growth and initiative",
         bio: "Director of Lyceum No. 8 for Gifted Children",
+        image: "/gauharbabykova.jpg", // Replace with actual path
       },
       {
         name: "Saltanat Shabazhanova",
-        topic: "New Forms of Educational Work in a Digital Society: AI-Based Methods",
-        bio: "Director of Abay Gymnasium for Gifted Children",
+        topic: "New types of educational work in the context of a digital society: methods based on artificial intelligence",
+        bio: "Director of the gymnasium for gifted children named after Abai",
+        image: "/saltanatshabazhanova.jpg", // Replace with actual path
       },
       {
         name: "Anara Sadykova",
-        topic: "Educational Leadership in the Era of Artificial Intelligence",
-        bio: "Deputy Dean, Senior Lecturer at the Faculty of Computer Science, Toraigyrov University",
+        topic: "Educational leadership in the age of artificial intelligence",
+        bio: "Deputy Dean, Senior Lecturer of the Faculty of Computer Sciences of Toraigyrov University",
+        image: "/sadykova.jpg", // Replace with actual path
       },
       {
         name: "Victoria Romadina",
-        topic: "AI Tools for Reducing Routine Workload and Increasing Engagement",
-        bio: "Director of ToriPro Kz, Master of Pedagogical Sciences, International AI Trainer",
-      },
-      {
-        name: "Aigul Nurlanova",
-        topic: "Digital Technologies in Education",
-        bio: "Expert in Educational Technologies with 15 Years of Experience",
-      },
-      {
-        name: "Marat Seitkaziev",
-        topic: "Innovations in Professional Education",
-        bio: "Director of the Innovation Center, Specialist in Modern Teaching Methods",
-      },
-      {
-        name: "Dina Abdrakhmanova",
-        topic: "International Cooperation in Education",
-        bio: "Coordinator of International Programs, Expert in Academic Mobility",
+        topic: "Artificial intelligence tools to reduce daily workload and increase participation",
+        bio: "ToriPro Kz Director, Master of Pedagogical Sciences, International AI trainer",
+        image: "/romadinavictoria.jpg", // Replace with actual path
       },
     ],
+    zapomnite: "REMEMBER!",
+cvet: "your color of the tour group",
      famPlace:"Enter surname",
     namePlace:"Enter name",
     otcPlace:"Enter middlename",
@@ -115,51 +108,42 @@ const translations = {
     registrationError: "Registration Error",
   },
   ru: {
-    speakers: [
+  speakers: [
       {
         name: "Татьяна Шмидт",
-        topic: "Нейротехнологии и искусственный интеллект в детском саду как средство познавательного развития ребёнка",
+        topic: "Нейротехнологии и искусственный интеллект в детском саду как инструмент когнитивного развития ребенка",
         bio: "Руководитель Ресурсного центра, детский сад №21, г. Экибастуз",
+        image: "/tatyanashmidt.jpg", // Replace with actual path
       },
       {
         name: "Татьяна Мигунова",
         topic: "Инновационные подходы в школьном менеджменте на основе искусственного интеллекта",
-        bio: "Директор школы инновационного типа им. Байтұрсынұлы",
+        bio: "Директор инновационной школы имени Байтурсынова",
+        image: "/migunova.jpg", // Replace with actual path
       },
       {
         name: "Гаухар Бабыкова",
         topic: "Роль руководителя в создании школьной среды, поддерживающей рост и инициативу",
-        bio: "Директор лицея №8 для одарённых детей",
+        bio: "Директор лицея №8 для одаренных детей",
+        image: "/gauharbabykova.jpg", // Replace with actual path
       },
       {
         name: "Салтанат Шабажанова",
         topic: "Новые формы воспитательной работы в условиях цифрового общества: методы на основе искусственного интеллекта",
-        bio: "Директор гимназии им. Абая для одарённых детей",
+        bio: "Директор гимназии для одаренных детей имени Абая",
+        image: "/saltanatshabazhanova.jpg", // Replace with actual path
       },
       {
         name: "Анара Садыкова",
         topic: "Образовательное лидерство в эпоху искусственного интеллекта",
-        bio: "Заместитель декана, старший преподаватель факультета Computer Science, Торайгыров университет",
+        bio: "Заместитель декана, старший преподаватель факультета компьютерных наук Торайгыровского университета",
+        image: "/sadykova.jpg", // Replace with actual path
       },
       {
         name: "Виктория Ромадина",
-        topic: "Инструменты ИИ для снижения рутинной нагрузки и повышения вовлечённости",
-        bio: "Директор ToriPro Kz, магистр педагогических наук, международный тренер по ИИ",
-      },
-      {
-        name: "Айгуль Нурланова",
-        topic: "Цифровые технологии в образовании",
-        bio: "Эксперт в области образовательных технологий с 15-летним опытом работы",
-      },
-      {
-        name: "Марат Сейтказиев",
-        topic: "Инновации в профессиональном образовании",
-        bio: "Директор инновационного центра, специалист по современным методам обучения",
-      },
-      {
-        name: "Дина Абдрахманова",
-        topic: "Международное сотрудничество в образовании",
-        bio: "Координатор международных программ, эксперт по академической мобильности",
+        topic: "Инструменты искусственного интеллекта для снижения повседневной нагрузки и увеличения вовлеченности",
+        bio: "Директор ToriPro Kz, магистр педагогических наук, международный тренер ИИ",
+        image: "/romadinavictoria.jpg", // Replace with actual path
       },
     ],
     zapomnite:"ЗАПОМНИТЕ!",
@@ -220,6 +204,8 @@ const translations = {
     registrationError: "Ошибка регистрации",
   },
   kz: {
+      zapomnite:"Есіңізде болсын!",
+    cvet:"сіздің экскурсиялық топтың түсі",
       famPlace:"Тегіні Енгізіңіз",
     namePlace:"Атын енгізіңіз",
     otcPlace:"Әкесінің аты енгізіңіз",
@@ -279,46 +265,37 @@ const translations = {
         name: "Татьяна Шмидт",
         topic: "Балабақшадағы нейротехнологиялар мен жасанды интеллект баланың танымдық дамуының құралы ретінде",
         bio: "Ресурстық орталықтың басшысы, №21 балабақша, Екібастұз қаласы",
+        image: "/tatyanashmidt.jpg", // Replace with actual path
       },
       {
         name: "Татьяна Мигунова",
         topic: "Жасанды интеллект негізінде мектеп менеджментіндегі инновациялық тәсілдер",
         bio: "Байтұрсынұлы атындағы инновациялық мектеп директоры",
+        image: "/migunova.jpg", // Replace with actual path
       },
       {
         name: "Гаухар Бабыкова",
         topic: "Өсу мен бастаманы қолдайтын мектеп ортасын құрудағы басшының рөлі",
         bio: "Дарынды балаларға арналған №8 лицей директоры",
+        image: "/gauharbabykova.jpg", // Replace with actual path
       },
       {
         name: "Салтанат Шабажанова",
         topic: "Цифрлық қоғам жағдайында тәрбие жұмысының жаңа түрлері: жасанды интеллект негізіндегі әдістер",
         bio: "Абай атындағы дарынды балаларға арналған гимназия директоры",
+        image: "/saltanatshabazhanova.jpg", // Replace with actual path
       },
       {
         name: "Анара Садыкова",
         topic: "Жасанды интеллект дәуіріндегі білім беру көшбасшылығы",
         bio: "Деканның орынбасары, Торайғыров университетінің Компьютерлік ғылымдар факультетінің аға оқытушысы",
+        image: "/sadykova.jpg", // Replace with actual path
       },
       {
         name: "Виктория Ромадина",
         topic: "Күнделікті жүктемені азайту және қатысуды арттыру үшін жасанды интеллект құралдары",
         bio: "ToriPro Kz директоры, педагогикалық ғылымдар магистрі, халықаралық ЖИ тренері",
-      },
-      {
-        name: "Айгуль Нурланова",
-        topic: "Білім берудегі цифрлық технологиялар",
-        bio: "Білім беру технологиялары саласындағы 15 жылдық тәжірибесі бар сарапшы",
-      },
-      {
-        name: "Марат Сейтказиев",
-        topic: "Кәсіби білім берудегі инновациялар",
-        bio: "Инновациялық орталық директоры, заманауи оқыту әдістерінің мам gas"
-      },
-      {
-        name: "Дина Абдрахманова",
-        topic: "Білім берудегі халықаралық ынтымақтастық",
-        bio: "Халықаралық бағдарламалар үйлестірушісі, академиялық мобильділік жөніндегі сарапшы",
+        image: "/romadinavictoria.jpg", // Replace with actual path
       },
     ],
   },

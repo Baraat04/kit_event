@@ -21,16 +21,18 @@ interface EventInfoProps {
   onBack: () => void
 }
 
+
+// Inside the EventInfo component
 export default function EventInfo({ user: initialUser, onBack }: EventInfoProps) {
-  const { language, translations } = useLanguage()
-  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const { language, translations } = useLanguage();
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [user, setUser] = useState(() => {
     if (typeof window !== 'undefined') {
-      const savedUser = localStorage.getItem('currentUser')
-      return savedUser ? JSON.parse(savedUser) : initialUser
+      const savedUser = localStorage.getItem('currentUser');
+      return savedUser ? JSON.parse(savedUser) : initialUser;
     }
-    return initialUser
-  })
+    return initialUser;
+  });
 
   const programImages = {
     ru: [
@@ -38,166 +40,146 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
       "/program-ru-2.jpg",
       "/program-ru-3.jpg",
       "/program-ru-4.jpg",
-      "/program-ru-5.jpg"
+      "/program-ru-5.jpg",
     ],
     en: [
       "/program-en-1.jpg",
       "/program-en-2.jpg",
       "/program-en-3.jpg",
       "/program-en-4.jpg",
-      "/program-en-5.jpg"
+      "/program-en-5.jpg",
     ],
     kz: [
       "/program-kz-1.jpg",
       "/program-kz-2.jpg",
       "/program-kz-3.jpg",
       "/program-kz-4.jpg",
-      "/program-kz-5.jpg"
-    ]
-  }
+      "/program-kz-5.jpg",
+    ],
+  };
 
-  const galleryImages = [KIT1, KIT2, KIT3, KIT4, KIT5, KIT6]
-
-  // Hardcoded speakers list for the specified names
-  const speakers = [
-    {
-      name: "Татьяна Шмидт",
-      topic: "Инновации в образовании",
-      bio: "Эксперт в области образовательных технологий с 15-летним опытом.",
-      image: "/tatyanashmidt.jpg"
-    },
-    {
-      name: "Татьяна Мигунова",
-      topic: "Цифровая трансформация",
-      bio: "Специалист по внедрению цифровых решений в корпоративной среде.",
-      image: "/migunova.jpg"
-    },
-    {
-      name: "Гаухар Бабыкова",
-      topic: "Устойчивое развитие",
-      bio: "Исследователь экологических инициатив и устойчивого развития.",
-      image: "/gauharbabykova.jpg"
-    },
-    {
-      name: "Салтанат Шабажанова",
-      topic: "Лидерство и мотивация",
-      bio: "Бизнес-тренер, специализирующийся на развитии лидерских качеств.",
-      image: "/saltanatshabazhanova.jpg"
-    },
-    {
-      name: "Анара Садыкова",
-      topic: "Искусственный интеллект в образовании",
-      bio: "Разработчик образовательных платформ на базе ИИ.",
-      image: "/sadykova.jpg"
-    },
-    {
-      name: "Виктория Ромадинa",
-      topic: "Креативное мышление",
-      bio: "Коуч по развитию креативности и инновационного мышления.",
-      image: "/romadinavictoria.jpg"
-    }
-  ]
+  const galleryImages = [KIT1, KIT2, KIT3, KIT4, KIT5, KIT6];
 
   useEffect(() => {
     if (user && typeof window !== 'undefined') {
-      localStorage.setItem('currentUser', JSON.stringify(user))
+      localStorage.setItem('currentUser', JSON.stringify(user));
     }
-  }, [user])
+  }, [user]);
 
   const handleBack = () => {
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('currentUser')
+      localStorage.removeItem('currentUser');
     }
-    onBack()
-  }
+    onBack();
+  };
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('currentUser')
+    const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
-      setUser(JSON.parse(savedUser))
+      setUser(JSON.parse(savedUser));
     }
-  }, [])
+  }, []);
 
   const getParticipantColor = (colorGroup: string) => {
     switch (colorGroup?.toLowerCase()) {
       case "green":
-        return "bg-green-100 border-green-500"
+        return "bg-green-100 border-green-500";
       case "yellow":
-        return "bg-yellow-100 border-yellow-500"
+        return "bg-yellow-100 border-yellow-500";
       case "orange":
-        return "bg-orange-100 border-yellow-500"
+        return "bg-orange-100 border-yellow-500";
       case "blue":
-        return "bg-blue-100 border-blue-500"
+        return "bg-blue-100 border-blue-500";
       case "white":
-        return "bg-gray-100 border-gray-500"
+        return "bg-gray-100 border-gray-500";
       default:
-        return "bg-gray-100 border-gray-500"
+        return "bg-gray-100 border-gray-500";
     }
-  }
+  };
 
   const getParticipantColorText = (colorGroup: string) => {
     switch (colorGroup?.toLowerCase()) {
       case "green":
-        return "text-green-800"
+        return "text-green-800";
       case "yellow":
-        return "text-yellow-800"
+        return "text-yellow-800";
       case "orange":
-        return "text-orange-800"
+        return "text-orange-800";
       case "blue":
-        return "text-blue-800"
+        return "text-blue-800";
       case "white":
-        return "text-gray-800"
+        return "text-gray-800";
       default:
-        return "text-gray-800"
+        return "text-gray-800";
     }
-  }
+  };
 
-  const getRussianColor = (colorGroup: string) => {
-    switch (colorGroup?.toLowerCase()) {
-      case "green":
-        return "ЗЕЛЁНЫЙ"
-      case "yellow":
-        return "ЖЁЛТЫЙ"
-      case "orange":
-        return "ОРАНЖЕВЫЙ"
-      case "blue":
-        return "СИНИЙ"
-      case "white":
-        return "БЕЛЫЙ"
-      default:
-        return colorGroup.toUpperCase()
-    }
-  }
+  const getTranslatedColor = (colorGroup: string) => {
+    const colorTranslations = {
+      en: {
+        green: "GREEN",
+        yellow: "YELLOW",
+        orange: "ORANGE",
+        blue: "BLUE",
+        white: "WHITE",
+      },
+      ru: {
+        green: "ЗЕЛЁНЫЙ",
+        yellow: "ЖЁЛТЫЙ",
+        orange: "ОРАНЖЕВЫЙ",
+        blue: "СИНИЙ",
+        white: "БЕЛЫЙ",
+      },
+      kz: {
+        green: "ЖАСЫЛ",
+        yellow: "САРЫ",
+        orange: "ҚЫЗҒЫЛТ САРЫ",
+        blue: "КӨК",
+        white: "АҚ",
+      },
+    };
+    return (
+      colorTranslations[language as keyof typeof colorTranslations][
+        colorGroup?.toLowerCase() as keyof (typeof colorTranslations)[Language]
+      ] || colorGroup.toUpperCase()
+    );
+  };
 
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
-  }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Badge className={`${getParticipantColor(user.color_group)} ${getParticipantColorText(user.color_group)} border-2`}>
+            <Badge
+              className={`${getParticipantColor(user.color_group)} ${getParticipantColorText(
+                user.color_group
+              )} border-2`}
+            >
               #{user.participantNumber} {user.lastName} {user.firstName}
             </Badge>
           </div>
         </div>
 
         <motion.div
-          className={`mt-4 p-4 rounded-lg shadow-lg ${getParticipantColor(user.color_group)} ${getParticipantColorText(user.color_group)} text-center bg-opacity-80 backdrop-blur-sm`}
+          className={`mt-4 p-4 rounded-lg shadow-lg ${getParticipantColor(
+            user.color_group
+          )} ${getParticipantColorText(user.color_group)} text-center bg-opacity-80 backdrop-blur-sm`}
           variants={textVariants}
           initial="hidden"
           animate="visible"
         >
           <p className="text-xl font-bold uppercase tracking-wide">
-            Запомните!
+            {translations.zapomnite || "REMEMBER!"}
           </p>
           <p className="text-lg font-semibold">
-            {user.firstName} {user.lastName}, ваш цвет экскурсионной группы —{" "}
+            {user.firstName} {user.lastName}, {translations.cvet || "your excursion group color is"}{" "}
             <span className="underline decoration-wavy">
-              {getRussianColor(user.color_group)}
+              {getTranslatedColor(user.color_group)}
             </span>!
           </p>
         </motion.div>
@@ -235,7 +217,7 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
                 overflow-hidden text-ellipsis whitespace-nowrap
               "
             >
-              {translations.gallery || "Галерея"}
+              {translations.gallery || "Gallery"}
             </TabsTrigger>
             <TabsTrigger
               value="links"
@@ -281,21 +263,18 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
             <Card>
               <CardHeader>
                 <CardTitle>
-                  {translations.speakersLabel} ({speakers.length})
+                  {translations.speakersLabel} ({translations.speakers.length})
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {speakers.length === 0 ? (
+                {translations.speakers.length === 0 ? (
                   <div className="text-center py-8 text-gray-500">
-                    {translations.noSpeakers || "Спикеры пока не добавлены"}
+                    {translations.noSpeakers || "No speakers added yet"}
                   </div>
                 ) : (
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {speakers.map((speaker: any, index: number) => (
-                      <Card
-                        key={index}
-                        className="hover:shadow-lg transition-shadow"
-                      >
+                    {translations.speakers.map((speaker: any, index: number) => (
+                      <Card key={index} className="hover:shadow-lg transition-shadow">
                         <CardContent className="p-6 text-center">
                           <Image
                             src={speaker.image || "/placeholder.svg?height=200&width=200"}
@@ -304,16 +283,10 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
                             height={200}
                             className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
                           />
-                          <h3 className="font-semibold text-lg mb-2">
-                            {speaker.name}
-                          </h3>
-                          <p className="text-blue-600 font-medium mb-2">
-                            {speaker.topic}
-                          </p>
+                          <h3 className="font-semibold text-lg mb-2">{speaker.name}</h3>
+                          <p className="text-blue-600 font-medium mb-2">{speaker.topic}</p>
                           {speaker.bio && (
-                            <p className="text-gray-600 text-sm">
-                              {speaker.bio}
-                            </p>
+                            <p className="text-gray-600 text-sm">{speaker.bio}</p>
                           )}
                         </CardContent>
                       </Card>
@@ -327,7 +300,7 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
           <TabsContent value="gallery" className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>{translations.gallery || "Галерея"}</CardTitle>
+                <CardTitle>{translations.gallery || "Gallery"}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -358,16 +331,12 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
                   <CardTitle>{translations.downloadPhotos}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-4">
-                    {translations.photosAvailable}
-                  </p>
+                  <p className="text-gray-600 mb-4">{translations.photosAvailable}</p>
                   <Button className="w-full" disabled>
                     <Download className="w-4 h-4 mr-2" />
                     {translations.downloadPhotos}
                   </Button>
-                  <p className="text-sm text-gray-500 mt-2">
-                    {translations.availableAfterEvent}
-                  </p>
+                  <p className="text-sm text-gray-500 mt-2">{translations.availableAfterEvent}</p>
                 </CardContent>
               </Card>
 
@@ -376,31 +345,15 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
                   <CardTitle>{translations.socialMedia}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start"
-                    asChild
-                  >
-                    <a
-                      href="https://kit.edu.kz"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                  <Button variant="outline" className="w-full justify-start" asChild>
+                    <a href="https://kit.edu.kz" target="_blank" rel="noopener noreferrer">
                       <Globe className="w-4 h-4 mr-2" />
                       kit.edu.kz
                       <ExternalLink className="w-4 h-4 ml-auto" />
                     </a>
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full justify-start"
-                    asChild
-                  >
-                    <a
-                      href="https://instagram.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                  <Button variant="outline" className="w-full justify-start" asChild>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
                       <Instagram className="w-4 h-4 mr-2" />
                       Instagram
                       <ExternalLink className="w-4 h-4 ml-auto" />
@@ -438,5 +391,5 @@ export default function EventInfo({ user: initialUser, onBack }: EventInfoProps)
         )}
       </div>
     </div>
-  )
+  );
 }
