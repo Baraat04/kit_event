@@ -101,10 +101,7 @@ export default function EventInfo({ user:initialUser, onBack }: EventInfoProps) 
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={onBack}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              {translations.back}
-            </Button>
+            
             <Badge className={`${getParticipantColor(user.color_group)} ${getParticipantColorText(user.color_group)} border-2`}>
               #{user.participantNumber} {user.lastName} {user.firstName}
             </Badge>
