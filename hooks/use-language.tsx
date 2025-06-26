@@ -12,6 +12,53 @@ interface LanguageContextType {
 
 const translations = {
   en: {
+    speakers: [
+      {
+        name: "Tatiana Schmidt",
+        topic: "Neurotechnologies and Artificial Intelligence in Kindergarten as a Means of Cognitive Development",
+        bio: "Head of the Resource Center, Kindergarten No. 21, Ekibastuz",
+      },
+      {
+        name: "Tatiana Migunova",
+        topic: "Innovative Approaches in School Management Based on Artificial Intelligence",
+        bio: "Director of the Baytursynuly Innovative School",
+      },
+      {
+        name: "Gaukhar Babykova",
+        topic: "The Role of a Leader in Creating a School Environment that Supports Growth and Initiative",
+        bio: "Director of Lyceum No. 8 for Gifted Children",
+      },
+      {
+        name: "Saltanat Shabazhanova",
+        topic: "New Forms of Educational Work in a Digital Society: AI-Based Methods",
+        bio: "Director of Abay Gymnasium for Gifted Children",
+      },
+      {
+        name: "Anara Sadykova",
+        topic: "Educational Leadership in the Era of Artificial Intelligence",
+        bio: "Deputy Dean, Senior Lecturer at the Faculty of Computer Science, Toraigyrov University",
+      },
+      {
+        name: "Victoria Romadina",
+        topic: "AI Tools for Reducing Routine Workload and Increasing Engagement",
+        bio: "Director of ToriPro Kz, Master of Pedagogical Sciences, International AI Trainer",
+      },
+      {
+        name: "Aigul Nurlanova",
+        topic: "Digital Technologies in Education",
+        bio: "Expert in Educational Technologies with 15 Years of Experience",
+      },
+      {
+        name: "Marat Seitkaziev",
+        topic: "Innovations in Professional Education",
+        bio: "Director of the Innovation Center, Specialist in Modern Teaching Methods",
+      },
+      {
+        name: "Dina Abdrakhmanova",
+        topic: "International Cooperation in Education",
+        bio: "Coordinator of International Programs, Expert in Academic Mobility",
+      },
+    ],
     welcome: "Welcome to the Event",
     eventDescription:
       "Join our educational event and become part of the professional community",
@@ -19,7 +66,7 @@ const translations = {
     participantsDesc: "Register and get a unique participant number",
     program: "Program",
     programDesc: "Check out the full event program",
-    speakers: "Speakers",
+    speakersLabel: "Speakers",
     speakersDesc: "Meet experts in your field",
     networking: "Networking",
     networkingDesc: "Expand your professional network",
@@ -63,6 +110,53 @@ const translations = {
     registrationError: "Registration Error",
   },
   ru: {
+    speakers: [
+      {
+        name: "Татьяна Шмидт",
+        topic: "Нейротехнологии и искусственный интеллект в детском саду как средство познавательного развития ребёнка",
+        bio: "Руководитель Ресурсного центра, детский сад №21, г. Экибастуз",
+      },
+      {
+        name: "Татьяна Мигунова",
+        topic: "Инновационные подходы в школьном менеджменте на основе искусственного интеллекта",
+        bio: "Директор школы инновационного типа им. Байтұрсынұлы",
+      },
+      {
+        name: "Гаухар Бабыкова",
+        topic: "Роль руководителя в создании школьной среды, поддерживающей рост и инициативу",
+        bio: "Директор лицея №8 для одарённых детей",
+      },
+      {
+        name: "Салтанат Шабажанова",
+        topic: "Новые формы воспитательной работы в условиях цифрового общества: методы на основе искусственного интеллекта",
+        bio: "Директор гимназии им. Абая для одарённых детей",
+      },
+      {
+        name: "Анара Садыкова",
+        topic: "Образовательное лидерство в эпоху искусственного интеллекта",
+        bio: "Заместитель декана, старший преподаватель факультета Computer Science, Торайгыров университет",
+      },
+      {
+        name: "Виктория Ромадина",
+        topic: "Инструменты ИИ для снижения рутинной нагрузки и повышения вовлечённости",
+        bio: "Директор ToriPro Kz, магистр педагогических наук, международный тренер по ИИ",
+      },
+      {
+        name: "Айгуль Нурланова",
+        topic: "Цифровые технологии в образовании",
+        bio: "Эксперт в области образовательных технологий с 15-летним опытом работы",
+      },
+      {
+        name: "Марат Сейтказиев",
+        topic: "Инновации в профессиональном образовании",
+        bio: "Директор инновационного центра, специалист по современным методам обучения",
+      },
+      {
+        name: "Дина Абдрахманова",
+        topic: "Международное сотрудничество в образовании",
+        bio: "Координатор международных программ, эксперт по академической мобильности",
+      },
+    ],
     welcome: "Добро пожаловать на мероприятие",
     eventDescription:
       "Присоединяйтесь к нашему образовательному мероприятию и станьте частью профессионального сообщества",
@@ -70,7 +164,7 @@ const translations = {
     participantsDesc: "Зарегистрируйтесь и получите уникальный номер участника",
     program: "Программа",
     programDesc: "Ознакомьтесь с полной программой мероприятия",
-    speakers: "Спикеры",
+    speakersLabel: "Спикеры",
     speakersDesc: "Встретьтесь с экспертами в своей области",
     networking: "Нетворкинг",
     networkingDesc: "Расширьте свою профессиональную сеть",
@@ -116,12 +210,12 @@ const translations = {
   kz: {
     welcome: "Іс-шараға қош келдіңіз",
     eventDescription:
-      "Біздің білім беру іс-шарасына қосылыңыз және кәсіби қауымдастықтың бөлігі болыңыз",
+    "Біздің білім беру іс-шарасына қосылыңыз және кәсіби қауымдастықтың бөлігі болыңыз",
     participants: "Қатысушылар",
     participantsDesc: "Тіркеліңіз және бірегей қатысушы нөмірін алыңыз",
     program: "Бағдарлама",
     programDesc: "Іс-шараның толық бағдарламасымен танысыңыз",
-    speakers: "Спикерлер",
+    speakersLabel: "Спикерлер",
     speakersDesc: "Өз саласындағы сарапшылармен кездесіңіз",
     networking: "Желілесу",
     networkingDesc: "Кәсіби желіңізді кеңейтіңіз",
@@ -163,6 +257,53 @@ const translations = {
     clickHereToLogin: "Кіру үшін мұнда басыңыз",
     saveCredentials: "Болашақ кіру үшін осы деректерді сақтаңыз",
     registrationError: "Тіркеу қатесі",
+    speakers: [
+      {
+        name: "Татьяна Шмидт",
+        topic: "Балабақшадағы нейротехнологиялар мен жасанды интеллект баланың танымдық дамуының құралы ретінде",
+        bio: "Ресурстық орталықтың басшысы, №21 балабақша, Екібастұз қаласы",
+      },
+      {
+        name: "Татьяна Мигунова",
+        topic: "Жасанды интеллект негізінде мектеп менеджментіндегі инновациялық тәсілдер",
+        bio: "Байтұрсынұлы атындағы инновациялық мектеп директоры",
+      },
+      {
+        name: "Гаухар Бабыкова",
+        topic: "Өсу мен бастаманы қолдайтын мектеп ортасын құрудағы басшының рөлі",
+        bio: "Дарынды балаларға арналған №8 лицей директоры",
+      },
+      {
+        name: "Салтанат Шабажанова",
+        topic: "Цифрлық қоғам жағдайында тәрбие жұмысының жаңа түрлері: жасанды интеллект негізіндегі әдістер",
+        bio: "Абай атындағы дарынды балаларға арналған гимназия директоры",
+      },
+      {
+        name: "Анара Садыкова",
+        topic: "Жасанды интеллект дәуіріндегі білім беру көшбасшылығы",
+        bio: "Деканның орынбасары, Торайғыров университетінің Компьютерлік ғылымдар факультетінің аға оқытушысы",
+      },
+      {
+        name: "Виктория Ромадина",
+        topic: "Күнделікті жүктемені азайту және қатысуды арттыру үшін жасанды интеллект құралдары",
+        bio: "ToriPro Kz директоры, педагогикалық ғылымдар магистрі, халықаралық ЖИ тренері",
+      },
+      {
+        name: "Айгуль Нурланова",
+        topic: "Білім берудегі цифрлық технологиялар",
+        bio: "Білім беру технологиялары саласындағы 15 жылдық тәжірибесі бар сарапшы",
+      },
+      {
+        name: "Марат Сейтказиев",
+        topic: "Кәсіби білім берудегі инновациялар",
+        bio: "Инновациялық орталық директоры, заманауи оқыту әдістерінің мам gas"
+      },
+      {
+        name: "Дина Абдрахманова",
+        topic: "Білім берудегі халықаралық ынтымақтастық",
+        bio: "Халықаралық бағдарламалар үйлестірушісі, академиялық мобильділік жөніндегі сарапшы",
+      },
+    ],
   },
 };
 

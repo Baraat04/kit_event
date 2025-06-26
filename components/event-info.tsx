@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import KIT1 from "../public/kit1.jpg";
@@ -11,18 +11,9 @@ import KIT5 from "../public/kit5.jpg";
 import KIT6 from "../public/kit6.jpg";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import {
-  ArrowLeft,
-  Download,
-  ExternalLink,
-  ZoomIn,
-  Instagram,
-  Globe,
-  RefreshCw,
-} from "lucide-react";
+import { ArrowLeft, Download, ExternalLink, ZoomIn, Instagram, Globe } from "lucide-react";
 import { useLanguage } from "@/hooks/use-language";
 import Image from "next/image";
-import { createClientSupabaseClient } from "@/lib/supabase";
 
 interface EventInfoProps {
   user: any;
@@ -32,34 +23,6 @@ interface EventInfoProps {
 export default function EventInfo({ user, onBack }: EventInfoProps) {
   const { translations } = useLanguage();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [speakers, setSpeakers] = useState<any[]>([]);
-  const [loadingSpeakers, setLoadingSpeakers] = useState(true);
-
-  // Загрузка спикеров из базы данных
-  const fetchSpeakers = async () => {
-    setLoadingSpeakers(true);
-    try {
-      const supabase = createClientSupabaseClient();
-      const { data, error } = await supabase
-        .from("speakers")
-        .select("*")
-        .order("created_at", { ascending: true });
-
-      if (error) {
-        console.error("Error fetching speakers:", error);
-      } else {
-        setSpeakers(data || []);
-      }
-    } catch (error) {
-      console.error("Error fetching speakers:", error);
-    } finally {
-      setLoadingSpeakers(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchSpeakers();
-  }, []);
 
   const galleryImages = [KIT1, KIT2, KIT3, KIT4, KIT5, KIT6];
 
@@ -81,7 +44,7 @@ export default function EventInfo({ user, onBack }: EventInfoProps) {
         <Tabs defaultValue="program" className="w-full">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="program">{translations.program}</TabsTrigger>
-            <TabsTrigger value="speakers">{translations.speakers}</TabsTrigger>
+            <TabsTrigger value="speakers">{translations.speakersLabel}</TabsTrigger>
             <TabsTrigger value="gallery">{translations.gallery}</TabsTrigger>
             <TabsTrigger value="links">{translations.links}</TabsTrigger>
           </TabsList>
@@ -114,37 +77,25 @@ export default function EventInfo({ user, onBack }: EventInfoProps) {
           <TabsContent value="speakers" className="mt-6">
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>
-                    {translations.speakers} ({speakers.length})
-                  </CardTitle>
-                  <Button variant="outline" size="sm" onClick={fetchSpeakers}>
-                    <RefreshCw className="h-4 w-4" />
-                  </Button>
-                </div>
+                <CardTitle>
+                  {translations.speakersLabel} ({translations.speakers.length})
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                {loadingSpeakers ? (
-                  <div className="flex justify-center py-8">
-                    <RefreshCw className="h-8 w-8 animate-spin text-blue-500" />
-                  </div>
-                ) : speakers.length === 0 ? (
+                {translations.speakers.length === 0 ? (
                   <div className="text-center py-8 text-gray-500">
-                    Спикеры пока не добавлены
+                    {translations.noSpeakers || "Спикеры пока не добавлены"}
                   </div>
                 ) : (
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {speakers.map((speaker) => (
+                    {translations.speakers.map((speaker, index) => (
                       <Card
-                        key={speaker.id}
+                        key={index}
                         className="hover:shadow-lg transition-shadow"
                       >
                         <CardContent className="p-6 text-center">
                           <Image
-                            src={
-                              speaker.image_url ||
-                              "/placeholder.svg?height=200&width=200"
-                            }
+                            src={"/placeholder.svg?height=200&width=200"}
                             alt={speaker.name}
                             width={200}
                             height={200}
@@ -258,7 +209,6 @@ export default function EventInfo({ user, onBack }: EventInfoProps) {
           </TabsContent>
         </Tabs>
 
-        {/* Image Modal */}
         {selectedImage && (
           <div
             className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"

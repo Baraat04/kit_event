@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -25,10 +24,30 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
+interface Participant {
+  participant_number: number;
+  last_name: string;
+  first_name: string;
+  middle_name: string | null;
+  region: string;
+  position: string;
+  login: string;
+  color_group: string;
+  password?: string | null;
+}
+
+interface Speaker {
+  id: number;
+  name: string;
+  topic: string;
+  bio: string | null;
+  created_at: string;
+}
+
 export default function AdminPage() {
   const { toast } = useToast()
-  const [participants, setParticipants] = useState<any[]>([])
-  const [speakers, setSpeakers] = useState<any[]>([])
+  const [participants, setParticipants] = useState<Participant[]>([])
+  const [speakers, setSpeakers] = useState<Speaker[]>([])
   const [loadingParticipants, setLoadingParticipants] = useState(true)
   const [loadingSpeakers, setLoadingSpeakers] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
@@ -39,42 +58,48 @@ export default function AdminPage() {
   })
   const [isAddingSpeaker, setIsAddingSpeaker] = useState(false)
   const [isDeletingParticipant, setIsDeletingParticipant] = useState(false)
-  const [participantToDelete, setParticipantToDelete] = useState<any>(null)
+  const [participantToDelete, setParticipantToDelete] = useState<Participant | null>(null)
 
-  // Загрузка участников
-  const fetchParticipants = async () => {
-    setLoadingParticipants(true)
-    try {
-      const supabase = createClientSupabaseClient()
+  // Fetch participants
+const fetchParticipants = async () => {
+  setLoadingParticipants(true)
+  try {
+    const supabase = createClientSupabaseClient()
+    console.log("Supabase client:", supabase);
 
-      let query = supabase.from("participants").select("*").order("participant_number", { ascending: true })
+    let query = supabase
+      .from("participants")
+      .select("participant_number, last_name, first_name, middle_name, region, position, login, color_group, password")
+      .order("participant_number", { ascending: true })
 
-      if (searchTerm) {
-        query = query.or(
-          `last_name.ilike.%${searchTerm}%,first_name.ilike.%${searchTerm}%,middle_name.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%`,
-        )
-      }
-
-      const { data, error } = await query
-
-      if (error) {
-        throw new Error(error.message)
-      }
-
-      setParticipants(data || [])
-    } catch (error) {
-      console.error("Error fetching participants:", error)
-      toast({
-        title: "Ошибка",
-        description: "Не удалось загрузить участников",
-        variant: "destructive",
-      })
-    } finally {
-      setLoadingParticipants(false)
+    if (searchTerm) {
+      console.log("Search term applied:", searchTerm);
+      query = query.or(
+        `last_name.ilike.%${searchTerm}%,first_name.ilike.%${searchTerm}%,middle_name.ilike.%${searchTerm}%,region.ilike.%${searchTerm}%`
+      )
     }
-  }
 
-  // Загрузка спикеров
+    const { data, error } = await query
+    console.log("Query result:", data, "Error:", error);
+
+    if (error) {
+      throw new Error(error.message)
+    }
+
+    setParticipants(data || [])
+  } catch (error) {
+    console.error("Error fetching participants:", error)
+    toast({
+      title: "Ошибка",
+      description: error instanceof Error ? error.message : "Не удалось загрузить участников",
+      variant: "destructive",
+    })
+  } finally {
+    setLoadingParticipants(false)
+  }
+}
+
+  // Fetch speakers
   const fetchSpeakers = async () => {
     setLoadingSpeakers(true)
     try {
@@ -103,6 +128,16 @@ export default function AdminPage() {
     fetchSpeakers()
   }, [])
 
+  // Group participants by color_group
+  const groupedParticipants = participants.reduce((acc, participant) => {
+    const color = participant.color_group || "undefined"
+    if (!acc[color]) {
+      acc[color] = []
+    }
+    acc[color].push(participant)
+    return acc
+  }, {} as Record<string, Participant[]>)
+
   const getColorBadge = (colorGroup: string) => {
     switch (colorGroup) {
       case "green":
@@ -113,6 +148,8 @@ export default function AdminPage() {
         return "bg-orange-100 text-orange-800 border-orange-300"
       case "blue":
         return "bg-blue-100 text-blue-800 border-blue-300"
+      case "white":
+        return "bg-gray-100 text-gray-800 border-gray-300"
       default:
         return "bg-gray-100 text-gray-800 border-gray-300"
     }
@@ -128,8 +165,27 @@ export default function AdminPage() {
         return "Оранжевый"
       case "blue":
         return "Голубой"
+      case "white":
+        return "Белый"
       default:
         return "Не определен"
+    }
+  }
+
+  const getGroupHeaderStyle = (colorGroup: string) => {
+    switch (colorGroup) {
+      case "green":
+        return "bg-green-50 border-l-4 border-green-400"
+      case "yellow":
+        return "bg-yellow-50 border-l-4 border-yellow-400"
+      case "orange":
+        return "bg-orange-50 border-l-4 border-orange-400"
+      case "blue":
+        return "bg-blue-50 border-l-4 border-blue-400"
+      case "white":
+        return "bg-gray-50 border-l-4 border-gray-400"
+      default:
+        return "bg-gray-50 border-l-4 border-gray-400"
     }
   }
 
@@ -165,7 +221,7 @@ export default function AdminPage() {
       })
 
       setNewSpeaker({ name: "", topic: "", bio: "" })
-      fetchSpeakers() // Обновляем список спикеров
+      fetchSpeakers()
     } catch (error) {
       console.error("Error adding speaker:", error)
       toast({
@@ -198,7 +254,7 @@ export default function AdminPage() {
         description: "Спикер успешно удален",
       })
 
-      fetchSpeakers() // Обновляем список спикеров
+      fetchSpeakers()
     } catch (error) {
       console.error("Error deleting speaker:", error)
       toast({
@@ -209,7 +265,7 @@ export default function AdminPage() {
     }
   }
 
-  const handleDeleteParticipant = async (participant: any) => {
+  const handleDeleteParticipant = async (participant: Participant) => {
     setParticipantToDelete(participant)
   }
 
@@ -218,7 +274,7 @@ export default function AdminPage() {
 
     setIsDeletingParticipant(true)
     try {
-      const response = await fetch(`/api/participants/${participantToDelete.id}`, {
+      const response = await fetch(`/api/participants/${participantToDelete.participant_number}`, {
         method: "DELETE",
       })
 
@@ -232,7 +288,7 @@ export default function AdminPage() {
         description: `Участник #${participantToDelete.participant_number} успешно удален`,
       })
 
-      fetchParticipants() // Обновляем список участников
+      fetchParticipants()
     } catch (error) {
       console.error("Error deleting participant:", error)
       toast({
@@ -321,42 +377,43 @@ export default function AdminPage() {
                     {searchTerm ? "Участники не найдены" : "Пока нет зарегистрированных участников"}
                   </div>
                 ) : (
-                  <div className="space-y-4">
-                    {participants.map((participant) => (
-                      <div key={participant.id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="flex items-center gap-4">
-                          <Badge className={`${getColorBadge(participant.color_group)} border`}>
-                            #{participant.participant_number}
-                          </Badge>
-                          <div>
-                            <h3 className="font-semibold">
-                              {participant.last_name} {participant.first_name} {participant.middle_name}
-                            </h3>
-                            <p className="text-sm text-gray-600">
-                              {participant.position} • {participant.region}
-                            </p>
-                            <p className="text-xs text-gray-500">Логин: {participant.login}</p>
-                            {participant.last_login && (
-                              <p className="text-xs text-gray-400">
-                                Последний вход: {new Date(participant.last_login).toLocaleString("ru-RU")}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex flex-col items-end gap-2">
-                          <div className="text-sm font-medium">Цвет: {getColorName(participant.color_group)}</div>
-                          <div className="text-xs text-gray-500">
-                            Регистрация: {new Date(participant.created_at).toLocaleDateString("ru-RU")}
-                          </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-red-600 hover:text-red-700 mt-2"
-                            onClick={() => handleDeleteParticipant(participant)}
-                          >
-                            <Trash2 className="w-4 h-4 mr-2" />
-                            Удалить
-                          </Button>
+                  <div className="space-y-8">
+                    {Object.entries(groupedParticipants).map(([colorGroup, groupParticipants]) => (
+                      <div key={colorGroup} className="space-y-4">
+                        <h2 className={`text-xl font-semibold p-3 rounded-lg ${getGroupHeaderStyle(colorGroup)}`}>
+                          Группа: {getColorName(colorGroup)} ({groupParticipants.length})
+                        </h2>
+                        <div className="space-y-4">
+                          {groupParticipants.map((participant) => (
+                            <div key={participant.participant_number} className="flex items-center justify-between p-4 border rounded-lg">
+                              <div className="flex items-center gap-4">
+                                <Badge className={`${getColorBadge(participant.color_group)} border`}>
+                                  #{participant.participant_number}
+                                </Badge>
+                                <div>
+                                  <h3 className="font-semibold">
+                                    {participant.last_name} {participant.first_name} {participant.middle_name || ""}
+                                  </h3>
+                                  <p className="text-sm text-gray-600">
+                                    {participant.position} • {participant.region}
+                                  </p>
+                                  <p className="text-xs text-gray-500">Логин: {participant.login}</p>
+                                </div>
+                              </div>
+                              <div className="flex flex-col items-end gap-2">
+                                <div className="text-sm font-medium">Цвет: {getColorName(participant.color_group)}</div>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-red-600 hover:text-red-700 mt-2"
+                                  onClick={() => handleDeleteParticipant(participant)}
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Удалить
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     ))}
@@ -469,7 +526,6 @@ export default function AdminPage() {
         </Tabs>
       </div>
 
-      {/* Диалог подтверждения удаления участника */}
       <AlertDialog open={!!participantToDelete} onOpenChange={(open) => !open && cancelDeleteParticipant()}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -508,7 +564,7 @@ export default function AdminPage() {
                 </>
               ) : (
                 <>
-                  <Trash2 className="h-4 w-4 mr-2" />
+                  <Trash2 className="w-4 h-4 mr-2" />
                   Удалить
                 </>
               )}
