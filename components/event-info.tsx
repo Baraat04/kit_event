@@ -14,33 +14,57 @@ import { ArrowLeft, Download, ExternalLink, ZoomIn, Instagram, Globe } from "luc
 import { useLanguage } from "@/hooks/use-language"
 import Image from "next/image"
 import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
+
 interface EventInfoProps {
   user: any
   onBack: () => void
 }
 
-export default function EventInfo({ user:initialUser, onBack }: EventInfoProps) {
-  const { translations } = useLanguage()
+export default function EventInfo({ user: initialUser, onBack }: EventInfoProps) {
+  const { language, translations } = useLanguage()
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [user, setUser] = useState(() => {
-    // При инициализации проверяем localStorage
     if (typeof window !== 'undefined') {
       const savedUser = localStorage.getItem('currentUser')
       return savedUser ? JSON.parse(savedUser) : initialUser
     }
     return initialUser
   })
+  const [showMessage, setShowMessage] = useState(true) // State to control message visibility
+ // Программы мероприятий для разных языков
+  const programImages = {
+    ru: [
+      "/program-ru-1.jpg",
+      "/program-ru-2.jpg",
+      "/program-ru-3.jpg",
+      "/program-ru-4.jpg",
+      "/program-ru-5.jpg"
+    ],
+    en: [
+      "/program-en-1.jpg",
+      "/program-en-2.jpg",
+      "/program-en-3.jpg",
+      "/program-en-4.jpg",
+      "/program-en-5.jpg"
+    ],
+    kz: [
+      "/program-kz-1.jpg",
+      "/program-kz-2.jpg",
+      "/program-kz-3.jpg",
+      "/program-kz-4.jpg",
+      "/program-kz-5.jpg"
+    ]
+  }
 
   const galleryImages = [KIT1, KIT2, KIT3, KIT4, KIT5, KIT6]
 
-  // Сохраняем пользователя в localStorage при изменении
   useEffect(() => {
     if (user && typeof window !== 'undefined') {
       localStorage.setItem('currentUser', JSON.stringify(user))
     }
   }, [user])
 
-  // Обработчик для сброса пользователя при выходе
   const handleBack = () => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('currentUser')
@@ -48,7 +72,6 @@ export default function EventInfo({ user:initialUser, onBack }: EventInfoProps) 
     onBack()
   }
 
-  // Восстанавливаем пользователя из localStorage при загрузке
   useEffect(() => {
     const savedUser = localStorage.getItem('currentUser')
     if (savedUser) {
@@ -56,12 +79,14 @@ export default function EventInfo({ user:initialUser, onBack }: EventInfoProps) 
     }
   }, [])
 
-  // Сохраняем пользователя в localStorage при изменении
+  // Make the message disappear after 5 seconds
   useEffect(() => {
-    if (user) {
-      localStorage.setItem('currentUser', JSON.stringify(user))
-    }
-  }, [user])
+    const timer = setTimeout(() => {
+      setShowMessage(false)
+    }, 5000) // 5 seconds
+    return () => clearTimeout(timer) // Cleanup timer on unmount
+  }, [])
+
   const getParticipantColor = (colorGroup: string) => {
     switch (colorGroup?.toLowerCase()) {
       case "green":
@@ -96,17 +121,62 @@ export default function EventInfo({ user:initialUser, onBack }: EventInfoProps) 
     }
   }
 
+  // Map English color names to Russian
+  const getRussianColor = (colorGroup: string) => {
+    switch (colorGroup?.toLowerCase()) {
+      case "green":
+        return "ЗЕЛЁНЫЙ"
+      case "yellow":
+        return "ЖЁЛТЫЙ"
+      case "orange":
+        return "ОРАНЖЕВЫЙ"
+      case "blue":
+        return "СИНИЙ"
+      case "white":
+        return "БЕЛЫЙ"
+      default:
+        return colorGroup.toUpperCase()
+    }
+  }
+
+  // Animation variants for the memorable text
+  const textVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+    exit: { opacity: 0, transition: { duration: 0.5 } }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            
             <Badge className={`${getParticipantColor(user.color_group)} ${getParticipantColorText(user.color_group)} border-2`}>
               #{user.participantNumber} {user.lastName} {user.firstName}
             </Badge>
           </div>
         </div>
+
+        {/* Memorable text with disappear effect */}
+        {showMessage && (
+          <motion.div
+            className={`mt-4 p-4 rounded-lg shadow-lg ${getParticipantColor(user.color_group)} ${getParticipantColorText(user.color_group)} text-center bg-opacity-80 backdrop-blur-sm animate-pulse`}
+            variants={textVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            <p className="text-xl font-bold uppercase tracking-wide">
+              Запомните!
+            </p>
+            <p className="text-lg font-semibold">
+              {user.firstName} {user.lastName}, ваш цвет экскурсионной группы —{" "}
+              <span className="underline decoration-wavy">
+                {getRussianColor(user.color_group)}
+              </span>!
+            </p>
+          </motion.div>
+        )}
 
         <Tabs defaultValue="program" className="w-full">
           <TabsList className="grid w-full grid-cols-4">
@@ -116,26 +186,28 @@ export default function EventInfo({ user:initialUser, onBack }: EventInfoProps) 
             <TabsTrigger value="links">{translations.links}</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="program" className="mt-6">
+         <TabsContent value="program" className="mt-6">
             <Card>
               <CardHeader>
                 <CardTitle>{translations.eventProgram}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="relative group cursor-pointer">
-                  <Image
-                    src="/placeholder.svg?height=600&width=800"
-                    alt="Event Program"
-                    width={800}
-                    height={600}
-                    className="w-full rounded-lg shadow-lg hover:shadow-xl transition-shadow"
-                    onClick={() =>
-                      setSelectedImage("/placeholder.svg?height=600&width=800")
-                    }
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-lg flex items-center justify-center">
-                    <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
+                <div className="grid gap-6">
+                  {programImages[language as keyof typeof programImages]?.map((image, index) => (
+                    <div key={index} className="relative group cursor-pointer">
+                      <Image
+                        src={image}
+                        alt={`Program ${index + 1}`}
+                        width={800}
+                        height={600}
+                        className="w-full rounded-lg shadow-lg hover:shadow-xl transition-shadow"
+                        onClick={() => setSelectedImage(image)}
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-lg flex items-center justify-center">
+                        <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
